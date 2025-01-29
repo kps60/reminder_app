@@ -1,7 +1,18 @@
 .App {
   text-align: center;
 }
-
+/* In your main CSS file */
+:root {
+  --color-primary: #2563eb;
+  --color-accent: #3b82f6;
+  --color-background: #ffffff;
+  --color-text-primary: #1f2937;
+  --color-text-secondary: #6b7280;
+  --color-border: #e5e7eb;
+  --color-error: #dc2626;
+  --color-warning: #f59e0b;
+  --color-success: #10b981;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -35,4 +46,43 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.modal {
+    animation: fadeIn 0.5s ease-in-out; /* Fade-in effect for modal */
+}
+
+.modal-exit {
+    animation: fadeOut 0.5s ease-in-out; /* Fade-out effect for modal */
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+.navbar {
+    animation: slideIn 0.5s ease-in-out; /* Slide-in effect for navbar */
 }

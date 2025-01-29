@@ -35,10 +35,21 @@ router.post('/login', async (req, res) => {
 router.post('/verify', async (req, res) => {
     const { userId } = req.body;
     const user = await User.findOne({ _id: userId });
-    console.log(user)
+
     if (user) {
+        bot.on("message", async (msg) => {
+            const chatId = msg.chat.id;
+            if (user.verified) {
+                bot.sendMessage(chatId, `User ID from database has verified successfully: ${userId}`);
+                return res.status(200).json({ user });
+            }
+        })
         bot.onText(/\/start/, async (msg) => {
             const chatId = msg.chat.id;
+            if (user.verified) {
+                bot.sendMessage(chatId, `User ID from database has verified successfully: ${userId}`);
+                return res.status(200).json({ user });
+            }
             const welcomeMessage = `
                 Welcome to ReminderBot!
                 `;
@@ -52,9 +63,9 @@ router.post('/verify', async (req, res) => {
             try {
                 await user.save();
                 bot.sendMessage(chatId, `User ID from database has verified successfully: ${userId}`);
-                res.status(200).json({ user });
+                return res.status(200).json({ user });
             } catch (error) {
-                res.status(401).json({ message: error.message });
+                return res.status(401).json({ message: error.message });
             }
 
         })

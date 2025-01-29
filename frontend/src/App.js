@@ -9,6 +9,7 @@ import Register from './pages/Register';
 import Reminders from './pages/Reminders';
 import CreateReminder from './pages/CreateReminder';
 import Modal from './components/Modal';
+import './App.css'; // Import the CSS file for animations
 
 const App = () => {
     const [modalMessage, setModalMessage] = useState('');
@@ -16,6 +17,7 @@ const App = () => {
     const handleCloseModal = () => {
         setModalMessage('');
     };
+
     return (
         <Provider store={store}>
             <Router>

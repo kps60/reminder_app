@@ -1,0 +1,145 @@
+/* Reminders.css */
+.reminders-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+  
+  .reminders-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  
+  .reminders-header h1 {
+    font-size: 2.5rem;
+    color: var(--color-primary);
+    margin-bottom: 0.5rem;
+  }
+  
+  .reminders-header .subtitle {
+    color: var(--color-text-secondary);
+    font-size: 1.1rem;
+  }
+  
+  .priority-grid {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+  
+  .priority-card {
+    background: var(--color-background);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    padding: 1.5rem;
+    border-left: 4px solid;
+  }
+  
+  .priority-card.high { border-color: var(--color-error); }
+  .priority-card.medium { border-color: var(--color-warning); }
+  .priority-card.low { border-color: var(--color-success); }
+  
+  .priority-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .priority-icon {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .priority-header h2 {
+    font-size: 1.25rem;
+    margin: 0;
+    color: var(--color-text-primary);
+  }
+  
+  .badge {
+    background: var(--color-accent);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+  }
+  
+  .reminders-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .reminders-list li {
+    margin-bottom: 1rem;
+    transition: opacity 0.2s ease;
+  }
+  
+  .reminders-list li:last-child {
+    margin-bottom: 0;
+  }
+  
+  .loader-container {
+    display: flex;
+    justify-content: center;
+    padding: 2rem 0;
+  }
+  
+  .full-page-loader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 50vh;
+    gap: 1rem;
+  }
+  
+  /* Loader animation */
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  
+  .loader {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--color-border);
+    border-top-color: var(--color-primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  
+  .loader.small {
+    width: 24px;
+    height: 24px;
+    border-width: 3px;
+  }
+  
+  .empty-state {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .reminders-container {
+      padding: 1rem;
+    }
+  
+    .reminders-header h1 {
+      font-size: 2rem;
+    }
+  
+    .priority-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    .loader {
+      animation: none;
+      border-top-color: var(--color-border);
+    }
+  }
