@@ -1,16 +1,20 @@
-import axios from 'axios';
+// import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import axiosInstance from "../api/axiosInstance"
+import axiosInstance from "../api/axiosInstance";
+import Loader from '../components/Loader'; // Import Loader component
+import Modal from '../components/Modal'; // Import Modal component
 import './Home.css'; // Import a CSS file for styling
-// import { Link } from "react-router-dom"
+
 const Home = () => {
     const userId = useSelector(state => state.user.userId);
     const [user, setUser] = useState(null); // Added state for user
     const [loading, setLoading] = useState(true); // Added loading state
     const [error, setError] = useState(null); // Added error state
+    const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
     const dispatch = useDispatch();
+
     const fetchUser = async () => {
         try {
             const response = await axiosInstance.get("/auth", {
@@ -18,11 +22,13 @@ const Home = () => {
             });
             return response.data;
         } catch (error) {
-            console.error("Error fetching user:", error);
+            // console.error("Error fetching user:", error);
             setError("Failed to fetch user data."); // Set error message
+            setIsModalOpen(true); // Open modal on error
             return null;
         }
     };
+
     useEffect(() => {
         const fetchUserData = async () => {
             setLoading(true); // Set loading to true before fetching
@@ -44,29 +50,31 @@ const Home = () => {
 
         fetchUserData();
     }, [userId, dispatch]); // Only run when userId changes
+
     const handleVerifyButtonClick = async () => {
-        console.log("User ID:", userId); // Debugging line to check userId
-        const botUrl = `https://web.telegram.org/#@remindersetbot`;
-        // window.open(botUrl, '_blank'); // Open the URL in a new window/tab
-        window.open(botUrl, '_blank') // Check if the bot is reachable
+        // console.log("User ID:", userId); // Debugging line to check userId
+        const botUrl = `https://web.telegram.org/#@remind06Bot`;
+        window.open(botUrl, '_blank'); // Check if the bot is reachable
         try {
             const response = await axiosInstance.post("/auth/verify", { userId: userId });
-            setUser(response.data.user)
-            dispatch({ type: 'VERIFY', payload: response.data.user.verified })
+            setUser(response.data.user);
+            dispatch({ type: 'VERIFY', payload: response.data.user.verified });
         } catch (error) {
             console.error("Error opening the bot:", error.message); // Log any other errors
-            alert(error.message);
+            setError(error.message); // Set error message
+            setIsModalOpen(true); // Open modal on error
         }
     };
+
     return (
         <div className="home-container">
             <h1>Welcome to the Reminder App</h1>
             <p>Your personal reminder assistant.</p>
-            {loading && <p>Loading user data...</p>} {/* Loading indicator */}
-            {error && <p className="error-message">{error}</p>} {/* Error message */}
-            {userId && <button onClick={handleVerifyButtonClick} disabled={user?.verified} className="verify-button">{user?.verified ? "Verified" : "Verify"}</button>}
+            {loading && <Loader size="medium" />} {/* Loading indicator */}
+            <Modal message={error} onClose={() => setIsModalOpen(false)} isError={true} open={isModalOpen} /> {/* Error modal */}
+            {user && userId && <button onClick={handleVerifyButtonClick} disabled={user?.verified} className="verify-button">{user?.verified ? "Verified" : "Verify"}</button>}
         </div>
     );
 };
 
-export default Home; 
+export default Home;
