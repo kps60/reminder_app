@@ -21,7 +21,7 @@ const Reminders = ({ setModalMessage }) => {
             
             try {
                 setIsLoading(true);
-                const response = await axiosInstance.get(`/reminders/${userId}`);
+                const response = await axiosInstance.get(`/api/reminders/${userId}`);
                 dispatch({ type: 'SET_REMINDERS', payload: response.data });
                 setModalMessage("Reminders updated successfully");
             } catch (error) {

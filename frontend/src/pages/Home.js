@@ -17,7 +17,7 @@ const Home = () => {
 
     const fetchUser = async () => {
         try {
-            const response = await axiosInstance.get("/auth", {
+            const response = await axiosInstance.get("/api/auth", {
                 userId: userId // Correct way to send query params
             });
             return response.data;
@@ -71,7 +71,10 @@ const Home = () => {
             <h1>Welcome to the Reminder App</h1>
             <p>Your personal reminder assistant.</p>
             {loading && <Loader size="medium" />} {/* Loading indicator */}
-            <Modal message={error} onClose={() => setIsModalOpen(false)} isError={true} open={isModalOpen} /> {/* Error modal */}
+            <Modal setError={setError} message={error} onClose={() => {
+                setIsModalOpen(false);
+                setError("")
+                }} isError={true} open={isModalOpen} /> {/* Error modal */}
             {user && userId && <button onClick={handleVerifyButtonClick} disabled={user?.verified} className="verify-button">{user?.verified ? "Verified" : "Verify"}</button>}
         </div>
     );

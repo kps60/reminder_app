@@ -16,7 +16,7 @@ const Register = ({ setModalMessage }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const { data } = await axiosInstance.post('/auth/register', { username, email, password });
+            const { data } = await axiosInstance.post('/api/auth/register', { username, email, password });
             const { token } = data;
             const decodedToken = jwtDecode(token);
             dispatch({ type: "LOGIN", payload: decodedToken.id })
@@ -25,7 +25,7 @@ const Register = ({ setModalMessage }) => {
             // Redirect or show success message
             navigate("/")
         } catch (error) {
-            setModalMessage(error.response?.data?.message || 'An error occurred.');
+            setModalMessage(error.message || 'An error occurred.');
             console.error(error);
         }
     };

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import axiosInstance from '../api/axiosInstance';
 
 const Reminder = ({ reminder, setModalMessage }) => {
     const updateReminder = async (id, updatedData) => {
         try {
-            await axios.put(`/api/reminders/${id}`, updatedData);
+            await axiosInstance.put(`/api/reminders/${id}`, updatedData);
 
         } catch (error) {
             setModalMessage(error.response?.data?.message || 'An error occurred.');
@@ -13,7 +14,7 @@ const Reminder = ({ reminder, setModalMessage }) => {
     };
 
     const deleteReminder = async (id) => {
-        await axios.delete(`/api/reminders/${id}`);
+        await axiosInstance.delete(`/api/reminders/${id}`);
     };
 
     return (

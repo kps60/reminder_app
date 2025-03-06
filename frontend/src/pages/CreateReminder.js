@@ -17,7 +17,7 @@ const CreateReminder = ({ setModalMessage }) => {
         e.preventDefault();
         const newReminder = { userId, title, description, date, recurrence, priority };
         try {
-            const response = await axiosInstance.post('/reminders', newReminder);
+            const response = await axiosInstance.post('/api/reminders', newReminder);
             dispatch({ type: 'ADD_REMINDER', payload: response.data });
             navigate(`/reminders/${userId}`)
             setModalMessage("successfully added")

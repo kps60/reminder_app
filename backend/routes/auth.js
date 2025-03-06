@@ -7,29 +7,39 @@ const router = express.Router();
 
 router.post('/register', async (req, res) => {
     const { username, email, password } = req.body;
-
-    // Check if the username already exists
-    const existingUser = await User.findOne({ username });
-    if (existingUser) {
-        return res.status(400).json({ message: 'Username already taken' });
+    try {
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ message: 'User already taken' });
+        }
+    } catch (error) {
+        // return res.status(500).json({ message: 'Error creating new user' });
     }
-
+    // Check if the username already exists
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = new User({ username, email, password: hashedPassword });
-    await newUser.save();
-    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET)
+    try {
+       const newUser = await User.create({ username, email, password: hashedPassword }).then((user) => user.save());
+        // console.log(newUser)
+        const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET)
 
-    res.status(201).json({ token, message: 'User registered' });
+        res.status(201).json({ token, message: 'User registered' });
+    } catch (error) {
+        // return res.status(500).json({ message: 'Error creating new user' });
+    }
 });
 
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
+    // console.log(user)
+    if (!user) {
+        return res.status(401).json({ message: 'Invalid email or password' });
+    }
     if (user && await bcrypt.compare(password, user.password)) {
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
         res.status(200).json({ token });
     } else {
-        res.status(401).json({ message: 'Invalid credentials' });
+        res.status(401).json({ message: 'Invalid credentials for Password' });
     }
 });
 router.post('/verify', async (req, res) => {

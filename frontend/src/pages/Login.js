@@ -15,7 +15,7 @@ const Login = ({ setModalMessage }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const { data } = await axiosInstance.post('/auth/login', { email, password });
+            const { data } = await axiosInstance.post('/api/auth/login', { email, password });
             const { token } = data;
             const decodedToken = jwtDecode(token);
             dispatch({ type: "LOGIN", payload: decodedToken.id })

@@ -41,8 +41,8 @@ router.put('/:id', async (req, res) => {
 
 // Delete a reminder
 router.delete('/:id', async (req, res) => {
-    await Reminder.findByIdAndDelete(req.params.id);
-    res.status(204).send();
+    const data = await Reminder.findByIdAndDelete(req.params.id);
+    res.status(204).json({ data });
 });
 
 
